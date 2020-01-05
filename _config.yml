@@ -100,3 +100,4 @@ theme: chic
 deploy:
   type: git
   repo: https://github.com/wenweny/wenweny.github.io
+  branch: master
