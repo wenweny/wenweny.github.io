@@ -3,11 +3,17 @@ navname: Wenwen's Blog
 
 # navigatior items
 nav:
-  Posts: /archives
-  Categories: /category
-  Tags: /tag
+  Post: /archives
+  Category: /category
+  Tag: /tag
   About: /about
 
+
+#nav:
+#  文章: /archives
+#  归类: /category
+#  标签: /tag
+#  关于: /about
 # favicon
 favicon: /favicon.ico
 
@@ -15,7 +21,7 @@ favicon: /favicon.ico
 nickname: Yang Wenwen
 
 ### this variable is MarkDown form.
-description: Not ready yet
+description: 坐标深圳，一个刚毕业从事NLP领域的女生。<br> 不说假话，但未必对所有人都是真话。
 #Lorem ipsum dolor sit amet, **consectetur adipiscing elit.** <br>Fusce eget urna vitae velit *eleifend interdum at ac* nisi.
 avatar: /image/flower.jpg
 
@@ -67,10 +73,10 @@ post_category_enable: true
 post_copyright_enable: true
 
 post_copyright_author_enable: true
-post_copyright_permalink_enable: true
+post_copyright_permalink_enable: false
 post_copyright_license_enable: true
 post_copyright_license_text: Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE
-post_copyright_slogan_enable: true
+post_copyright_slogan_enable: false
 post_copyright_slogan_text: Do you believe in <strong>DESTINY<strong>?
 ## toc
 post_toc_enable: true
