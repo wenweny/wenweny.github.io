@@ -1,7 +1,8 @@
 ---
 title: 贝叶斯公式/朴素贝叶斯分类器及python自实现
 date: 2018-11-20 09:48:40
-tag: Machine Learning
+tags: Machine Learning
+category: Machine Learning
 mathjax: true
 ---
 
