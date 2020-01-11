@@ -33,10 +33,9 @@ links:
   Blog: /archives
 #  Category:
 #  Tags: 
-#  Link:
 #  Resume:
-#  Publish:
-#  Trophy:
+#  Publish: 
+#  Trophy: 
 #  Gallary:
 #  RSS:
 #  AliPay:
@@ -57,6 +56,7 @@ links:
 #  Weibo:
 #  WeChat:
   Github: https://github.com/wenweny
+  Link: https://blog.csdn.net/qq_23590921
 
 # how links show: you have 2 choice--text or icon.
 links_text_enable: false
