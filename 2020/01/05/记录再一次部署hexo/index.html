@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="wenwen">
+
+
+
+	
+
+<title>记录再一次利用hexo部署博客 | wnewen&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Wenwen&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Post</a>
+                
+                    <a class="menu-item" href="/category">Category</a>
+                
+                    <a class="menu-item" href="/tag">Tag</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Wenwen&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Post</a>
+                
+                    <a class="menu-item" href="/category">Category</a>
+                
+                    <a class="menu-item" href="/tag">Tag</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">记录再一次利用hexo部署博客</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">wenwen</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">January 5, 2020&nbsp;&nbsp;12:09:46</a>
+                        </span>
+                    
+                    
+					<span ></span>
+					<span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span> visits</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这不是第一次部署博客，前年（对..都前年了）折腾过几天，后来由于太懒就闲置了</p>
+<p>等后来再想重新开始的时候，发现之前用的两台电脑都还给学校了..源文件当时也不知道要保存，然后又陷入了源文件不在想恢复的过程…然而使用<code>hexo d</code>是经过转换后部署到<code>github</code>的，并不是源文件。所以，又拖拖拖（sad</p>
+<h3 id="Hexo博客在多台电脑提交和更新"><a href="#Hexo博客在多台电脑提交和更新" class="headerlink" title="Hexo博客在多台电脑提交和更新"></a>Hexo博客在多台电脑提交和更新</h3><ul>
+<li>结论：是可以的，分别托管page和source即可。因为部署好的github.io是经过转换的，直接clone下来并不是”原先的文件”</li>
+</ul>
+<p>网络有很多方法，大同小异。比较推崇的是在github.io的项目中新建一个分支用于存放源文件。</p>
+<ol>
+<li><p>新建分支<code>hexo</code>(可自己命名)，将这个分支设为default</p>
+</li>
+<li><p>使用三部曲提交即可（就是把它当成一个文件项目）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add . </span><br><span class="line">git commit -m "" </span><br><span class="line">git push -u origin hexo:hexo #以后每次提交可以直接git push</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>无需切换到master分支</strong>，直接在<code>hexo</code>分支用三部曲提交部署，会自动更新在master。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s <span class="comment">#（可在本地先查看) </span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注意：git多分支，当切换分支时，本地的文件会相应变化，自动“变成”工作分支的最后一次提交文件。所以你此时的所有工作都在<code>hexo</code>分支上，就不要切回master了！之前还没用过分支功能，以为部署要切回去，然后切回去什么文件都没了…吓死</p>
+</li>
+<li><p>去一台新电脑的时候</p>
+<ul>
+<li><p>首次<code>clone hexo</code>分支的文件，安装<code>hexo</code>相关插件和软件。包括<code>node.js,git,npm</code>相关。（由于<code>hexo</code>的这些依赖可以直接安装，所以提交的时候仓库的<code>.gitignore</code>文件自动忽略了这些，这里需要重新安装，很方便的）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装git，配置好</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装node.js</span></span><br><span class="line">node -v #查看是否安装好</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装hexo</span></span><br><span class="line">npm install hexo-cli -g</span><br><span class="line"><span class="meta">#</span><span class="bash"> 初始化博客目录，无须先建文件夹</span></span><br><span class="line">hexo init name.github.io</span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入目录：</span></span><br><span class="line">cd name.github.io</span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装npm</span></span><br><span class="line">npm install</span><br><span class="line"><span class="meta">#</span><span class="bash"> 可以生成一个全新的博客</span></span><br><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br><span class="line"><span class="meta">#</span><span class="bash"> 在本地http://localhost:4000可以看见一个全新的blog，如同你之前新建的时候一样</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 关联远程仓</span></span><br><span class="line">git remote add origin https://github.com/yourname/yourname.github.io.git </span><br><span class="line"><span class="meta">#</span><span class="bash"> 我是在github上直接建的分支，远程仓有而本地仓没有</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 本地新建分支hexo，并自动跟踪远程的同名分支</span></span><br><span class="line">git checkout --track origin/hexo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>除了首次去一台<strong>全新的未布置过hexo博客的</strong>电脑以外。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">git pull # 恢复上一次在任一电脑上push上去的文件 git pull origin hexo:hexo</span><br><span class="line"><span class="meta">#</span><span class="bash"> 一通操作,记得</span></span><br><span class="line">git add</span><br><span class="line">git commit</span><br><span class="line">git push </span><br><span class="line"><span class="meta">#</span><span class="bash"> 再</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除io文件夹下的 .deploy_git 文件夹</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 最后</span></span><br><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d </span><br><span class="line"><span class="meta">#</span><span class="bash"> 即可</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果产生冲突，实在不行也可暴力解决，反正也是要更新到上一次的文件版本</span></span><br><span class="line">git fetch origin hexo</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="遇到的问题及解决"><a href="#遇到的问题及解决" class="headerlink" title="遇到的问题及解决"></a>遇到的问题及解决</h3><ul>
+<li><p>hexo d后出现 ERROR Deployer not found: git</p>
+<p>这是因为没安装<code>hexo-deployer-git</code>插件，在<strong>站点目录</strong>下输入下面的插件安装就好了 </p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>error: RPC failed; curl 56 OpenSSL SSL_read: SSL_ERROR_SYSCALL, errno 10054；fatal: The remote end hung up unexpectedly</li>
+</ul>
+<p>提交的文件太大，导致推送失败–&gt;全局设置大一点的文件大小</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config http.postBuffer 524288000</span><br><span class="line"><span class="meta">#</span><span class="bash">查看是否设置成功</span></span><br><span class="line">git config --list</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>git branch 看不到任何信息</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 先commit再查看分支branch！！</span></span><br><span class="line">git brach</span><br><span class="line">git checkout BranchName # 切换分支</span><br><span class="line">git checkout -b BranchName # 创建分支BanchName并切换</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>提交的时候新主题下的文件没有push上去</li>
+</ul>
+<p>删除theme/chic文件夹下的.git文件即可。git无法多层提交</p>
+<ul>
+<li>修改了一些东西，在本地<code>hexo s</code>是ok的，但<code>hexo d</code>部署之后没有显示修改</li>
+</ul>
+<p>删除name.github.io文件夹下的 <code>.deploy_git</code> 文件夹，再次<code>hexo</code>三步曲</p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.jianshu.com/p/842897f0c8ba" target="_blank" rel="noopener">hexo多电脑同步管理一个博客 | ZYMIN</a></p>
+<p><a href="https://www.jianshu.com/p/0b1fccce74e0" target="_blank" rel="noopener">利用Hexo在多台电脑上提交和更新github pages博客</a></p>
+<p><a href="https://www.cnblogs.com/ampl/p/10873877.html" target="_blank" rel="noopener">git 关联远程分支</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>wenwen</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/01/11/2019%E5%B9%B4%E6%80%BB%E7%BB%93/">2019年总结</a>
+            
+            
+            <a class="next" rel="next" href="/2018/11/20/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%85%AC%E5%BC%8F%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8%E5%8F%8Apython%E8%87%AA%E5%AE%9E%E7%8E%B0/">贝叶斯公式/朴素贝叶斯分类器及python自实现</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+
+	<style>
+	.copyright{line-height:24px}
+	</style>
+	
+    <div class="copyright">
+        <span>© wenwen | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+		<br>
+		<span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv"></span>  visits  |  </span>	
+		
+		<span id="busuanzi_container_site_uv"><span id="busuanzi_value_site_uv"></span>  visitors</span>
+		
+	</div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+    </div>
+</body>
+</html>
