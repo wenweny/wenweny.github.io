@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="wenwen">
+
+
+
+	
+
+<title>python中的多线程 | wnewen&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Wenwen&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Post</a>
+                
+                    <a class="menu-item" href="/category">Category</a>
+                
+                    <a class="menu-item" href="/tag">Tag</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Wenwen&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Post</a>
+                
+                    <a class="menu-item" href="/category">Category</a>
+                
+                    <a class="menu-item" href="/tag">Tag</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">python中的多线程</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">wenwen</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">April 14, 2021&nbsp;&nbsp;20:48:40</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Python/">Python</a>
+                            
+                        </span>
+                    
+					<span ></span>
+					<span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span> visits</span>
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>多线程是操作系统能够进行运算调度的最小单位，它被包含在进程之中，是进程中的实际运作单位。一个进程必须包含一个线程。</p>
+<p>在线程中，所有状态在默认情况下都是共享的，比如内存共享。</p>
+<h2 id="先来试试"><a href="#先来试试" class="headerlink" title="先来试试"></a>先来试试</h2><p>python标准库包括：低级模块_thread 和高级模块 threading，绝大多数情况我们使用threading.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line"><span class="comment"># Thread 基本参数</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExplainThread</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, group=None, target=None, name=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                     args=<span class="params">()</span>, kwargs=None, *, daemon=None)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        target： 指定线程由 run () 方法调用的可调用对象。默认为 None, 意味着不调用任何内容。</span></span><br><span class="line"><span class="string">        name： 指定该线程的名称。 在默认情况下，创建一个唯一的名称。</span></span><br><span class="line"><span class="string">        args： target调用的实参，元组格式。默认为 ()，即不传参。</span></span><br><span class="line"><span class="string">        daemon： 为False表示父线程在运行结束时需要等待子线程结束才能结束程序，为True则表示父线程在运行结束时，子线程无论是否还有任务未完成都会跟随父进程退出，结束程序。</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">(arg)</span>:</span>  <span class="comment"># 线程执行的目标函数</span></span><br><span class="line">    print(<span class="string">"I'm working &#123;&#125;"</span>.format(arg))</span><br><span class="line">    print(<span class="string">"worker thread:"</span>,current_thread())</span><br><span class="line">    print(<span class="string">"Fineshed"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(current_thread())</span><br><span class="line">t = Thread(target=worker, args=(current_thread(),), name=<span class="string">"firstworker"</span>)  <span class="comment"># 线程对象</span></span><br><span class="line">t.start()  <span class="comment"># 启动线程</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">&lt;_MainThread(MainThread, started 43488)&gt;</span></span><br><span class="line"><span class="string">I'm working &lt;_MainThread(MainThread, started 43488)&gt;</span></span><br><span class="line"><span class="string">worker thread: &lt;Thread(firstworker, started 61856)&gt;</span></span><br><span class="line"><span class="string">Fineshed</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+<p>最简单的多线程，哪怕只做一件事，也是新开了一个线程。</p>
+<p>线程的传参和普通函数没有区别，只是格式必须为元祖格式。</p>
+<p>当函数执行完之后，线程也就跟着退出了。</p>
+<h2 id="线程退出条件"><a href="#线程退出条件" class="headerlink" title="线程退出条件"></a>线程退出条件</h2><ul>
+<li>线程内的函数语句执行完毕，线程自动结束。（如上面的例子）</li>
+<li>线程内的函数抛出未处理的异常。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">(arg)</span>:</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> count &gt; <span class="number">3</span>:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(count)</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        print(<span class="string">"I'm working &#123;&#125;,count=&#123;&#125;"</span>.format(arg, count))</span><br><span class="line">    print(<span class="string">"Fineshed"</span>)</span><br><span class="line"></span><br><span class="line">t = threading.Thread(target=worker, args=(threading.enumerate(),), name=<span class="string">"SonThread"</span>)</span><br><span class="line">t.start()</span><br><span class="line"></span><br><span class="line">print(threading.enumerate())</span><br><span class="line">print(<span class="string">"====end==="</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">[&lt;_MainThread(MainThread, started 63924)&gt;, &lt;Thread(SonThread, started 34916)&gt;]</span></span><br><span class="line"><span class="string">====end===</span></span><br><span class="line"><span class="string">[&lt;_MainThread(MainThread, started 63924)&gt;, &lt;Thread(SonThread, started 34916)&gt;]</span></span><br><span class="line"><span class="string">I'm working [&lt;_MainThread(MainThread, stopped 63924)&gt;],count=1</span></span><br><span class="line"><span class="string">I'm working [&lt;_MainThread(MainThread, stopped 63924)&gt;],count=2</span></span><br><span class="line"><span class="string">I'm working [&lt;_MainThread(MainThread, stopped 63924)&gt;],count=3</span></span><br><span class="line"><span class="string">I'm working [&lt;_MainThread(MainThread, stopped 63924)&gt;],count=4</span></span><br><span class="line"><span class="string">Exception in thread SonThread:</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File "D:\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner</span></span><br><span class="line"><span class="string">    self.run()</span></span><br><span class="line"><span class="string">  File "D:\Anaconda3\lib\threading.py", line 865, in run</span></span><br><span class="line"><span class="string">    self._target(*self._args, **self._kwargs)</span></span><br><span class="line"><span class="string">  File "E:/yangwenwen/pythonProject/multi_threading.py", line 35, in worker</span></span><br><span class="line"><span class="string">    raise RuntimeError(count)</span></span><br><span class="line"><span class="string">RuntimeError: 4</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，演示了触发异常自动退出线程。但最先打印的是主程序的”===end===”语句，是因为在程序中，主线程启动一个线程后，不会等待子线程执行完毕，就继续执行了后续语句，在执行完主线程语句后，发现还有子线程没有结束，于是等待子线程执行结束，子线程在运行时抛出了未处理的异常，最终子线程结束，主线程也随之结束。</p>
+<h2 id="方法属性"><a href="#方法属性" class="headerlink" title="方法属性"></a>方法属性</h2><h3 id="Threading属性"><a href="#Threading属性" class="headerlink" title="Threading属性"></a>Threading属性</h3><ul>
+<li><code>threading.current_thread()</code>   返回当前线程对象</li>
+<li><code>threading.main_thread()</code>         返回主线程对象</li>
+<li><code>threading.active_count()</code>       返回处于Active状态的线程个数</li>
+<li><code>threading.enumerate()</code>             返回所有存活的线程的列表，不包括已经终止的线程和未启动的线程</li>
+<li><code>threading.get_ident()</code>             返回当前线程的ID，非0整数</li>
+</ul>
+<h3 id="Thread实例的属性"><a href="#Thread实例的属性" class="headerlink" title="Thread实例的属性"></a>Thread实例的属性</h3><ul>
+<li><code>threading.current_thread().name</code>        线程名，只是一个标识符，可以使用<code>getName()</code>、<code>setName()</code>获取和运行时重命名。</li>
+<li><code>threading.current_thread().ident</code>       线程ID，非0整数。线程启动后才会有ID，否则为None。线程退出，此ID依旧可以访问。此ID可以重复使用</li>
+<li><code>threading.current_thread().is_alive()</code>  返回线程是否存活，布尔值，True或False。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">showthreadinfo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"~~~~~~~showthreadinfo~~~~~~"</span>)</span><br><span class="line">    print(<span class="string">"current thread = &#123;&#125;"</span>.format(threading.current_thread()))</span><br><span class="line">    print(<span class="string">"main thread  = &#123;&#125;"</span>.format(threading.main_thread()))</span><br><span class="line">    print(<span class="string">"active thread count = &#123;&#125;"</span>.format(threading.active_count()))</span><br><span class="line">    print(<span class="string">"active thread list = &#123;&#125;"</span>.format(threading.enumerate()))</span><br><span class="line">    print(<span class="string">"thread id = &#123;&#125;"</span>.format(threading.get_ident()))</span><br><span class="line">    print(<span class="string">"~~~~~~~showthreadinfo end~~~~~~"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">(arg)</span>:</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> count &gt; <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(count)</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        showthreadinfo()</span><br><span class="line">        print(<span class="string">"I'm working &#123;&#125;,count=&#123;&#125;"</span>.format(arg, count))</span><br><span class="line">    print(<span class="string">"Fineshed"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">showthreadinfo()  <span class="comment"># 主线程中调用</span></span><br><span class="line">time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">t = threading.Thread(target=worker, args=(current_thread(),),name=<span class="string">"SonThread"</span>)</span><br><span class="line">t.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    time.sleep(<span class="number">1.1</span>)</span><br><span class="line">    <span class="keyword">if</span> t.is_alive():</span><br><span class="line">        print(<span class="string">"&#123;&#125; &#123;&#125; alive"</span>.format(t.name, t.ident))</span><br><span class="line">        print(<span class="string">"Thread name:"</span>, t.getName())</span><br><span class="line">        print(<span class="string">"Thread setName"</span>)</span><br><span class="line">        t.setName(<span class="string">"SonThreadRename"</span>)</span><br><span class="line">        print(<span class="string">"Thread name:"</span>, t.getName())</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"&#123;&#125; &#123;&#125; alive"</span>.format(t.name, t.ident))</span><br><span class="line">        t.start()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"====end==="</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">~~~~~~~showthreadinfo~~~~~~</span></span><br><span class="line"><span class="string">current thread = &lt;_MainThread(MainThread, started 45476)&gt;</span></span><br><span class="line"><span class="string">main thread  = &lt;_MainThread(MainThread, started 45476)&gt;</span></span><br><span class="line"><span class="string">active thread count = 1</span></span><br><span class="line"><span class="string">active thread list = [&lt;_MainThread(MainThread, started 45476)&gt;]</span></span><br><span class="line"><span class="string">thread id = 45476</span></span><br><span class="line"><span class="string">~~~~~~~showthreadinfo end~~~~~~</span></span><br><span class="line"><span class="string">~~~~~~~showthreadinfo~~~~~~</span></span><br><span class="line"><span class="string">current thread = &lt;Thread(SonThread, started 30216)&gt;</span></span><br><span class="line"><span class="string">main thread  = &lt;_MainThread(MainThread, started 45476)&gt;</span></span><br><span class="line"><span class="string">active thread count = 2</span></span><br><span class="line"><span class="string">active thread list = [&lt;_MainThread(MainThread, started 45476)&gt;, &lt;Thread(SonThread, started 30216)&gt;]</span></span><br><span class="line"><span class="string">thread id = 30216</span></span><br><span class="line"><span class="string">~~~~~~~showthreadinfo end~~~~~~</span></span><br><span class="line"><span class="string">I'm working &lt;_MainThread(MainThread, started 45476)&gt;,count=1</span></span><br><span class="line"><span class="string">SonThread 30216 alive</span></span><br><span class="line"><span class="string">Thread name SonThread</span></span><br><span class="line"><span class="string">Thread rename</span></span><br><span class="line"><span class="string">Thread name SonThreadRename</span></span><br><span class="line"><span class="string">~~~~~~~showthreadinfo~~~~~~</span></span><br><span class="line"><span class="string">current thread = &lt;Thread(SonThreadRename, started 30216)&gt;</span></span><br><span class="line"><span class="string">main thread  = &lt;_MainThread(MainThread, started 45476)&gt;</span></span><br><span class="line"><span class="string">active thread count = 2</span></span><br><span class="line"><span class="string">active thread list = [&lt;_MainThread(MainThread, started 45476)&gt;, &lt;Thread(SonThreadRename, started 30216)&gt;]</span></span><br><span class="line"><span class="string">thread id = 30216</span></span><br><span class="line"><span class="string">~~~~~~~showthreadinfo end~~~~~~</span></span><br><span class="line"><span class="string">I'm working &lt;_MainThread(MainThread, started 45476)&gt;,count=2</span></span><br><span class="line"><span class="string">SonThreadRename 30216 alive</span></span><br><span class="line"><span class="string">Thread name SonThreadRename</span></span><br><span class="line"><span class="string">Thread rename</span></span><br><span class="line"><span class="string">Thread name SonThreadRename</span></span><br><span class="line"><span class="string">~~~~~~~showthreadinfo~~~~~~</span></span><br><span class="line"><span class="string">current thread = &lt;Thread(SonThreadRename, started 30216)&gt;</span></span><br><span class="line"><span class="string">main thread  = &lt;_MainThread(MainThread, started 45476)&gt;</span></span><br><span class="line"><span class="string">active thread count = 2</span></span><br><span class="line"><span class="string">active thread list = [&lt;_MainThread(MainThread, started 45476)&gt;, &lt;Thread(SonThreadRename, started 30216)&gt;]</span></span><br><span class="line"><span class="string">thread id = 30216</span></span><br><span class="line"><span class="string">~~~~~~~showthreadinfo end~~~~~~</span></span><br><span class="line"><span class="string">I'm working &lt;_MainThread(MainThread, started 45476)&gt;,count=3</span></span><br><span class="line"><span class="string">Exception in thread SonThreadRename:</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File "D:\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner</span></span><br><span class="line"><span class="string">    self.run()</span></span><br><span class="line"><span class="string">  File "D:\Anaconda3\lib\threading.py", line 865, in run</span></span><br><span class="line"><span class="string">    self._target(*self._args, **self._kwargs)</span></span><br><span class="line"><span class="string">  File "E:/yangwenwen/pythonProject/multi_threading.py", line 45, in worker</span></span><br><span class="line"><span class="string">    raise RuntimeError(count)</span></span><br><span class="line"><span class="string">RuntimeError: 3</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">SonThreadRename 30216 alive</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-------------------------------------------------------------------------------</span></span><br><span class="line"><span class="string">multi_threading.py 69 &lt;module&gt;</span></span><br><span class="line"><span class="string">t.start()</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">threading.py 843 start</span></span><br><span class="line"><span class="string">raise RuntimeError("threads can only be started once")</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">RuntimeError:</span></span><br><span class="line"><span class="string">threads can only be started once</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+<p>线程退出后，尝试再次启动线程时，抛出<code>RuntimeError</code>异常，线程对象在定义后只能启动一次。</p>
+<h3 id="run和start方法"><a href="#run和start方法" class="headerlink" title="run和start方法"></a>run和start方法</h3><h4 id="单线程情况"><a href="#单线程情况" class="headerlink" title="单线程情况"></a>单线程情况</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InputReader</span><span class="params">(threading.Thread)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"~~~ run ~~~"</span>)</span><br><span class="line">        super(InputReader, self).run()</span><br><span class="line">        self.line_of_text = input()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"~~~ start ~~~"</span>)</span><br><span class="line">        super().start() <span class="comment">#调用父类的start()和run()方法</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">"Enter some text and press enter"</span>)</span><br><span class="line">t1 = InputReader()</span><br><span class="line"></span><br><span class="line"><span class="comment"># start以并发模式运行</span></span><br><span class="line"><span class="comment"># t1.start()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># run 只是普通的函数调用</span></span><br><span class="line">t1.run()</span><br><span class="line"></span><br><span class="line">count = result = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> t1.is_alive():</span><br><span class="line">    result = count*count</span><br><span class="line">    count+=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">"&#123;0&#125; *&#123;0&#125; = &#123;1&#125;"</span>.format(count,result))</span><br><span class="line">print(<span class="string">"while you typed '&#123;&#125;'"</span>.format(t1.line_of_text))</span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">以run运行</span></span><br><span class="line"><span class="string">Enter some text and press enter</span></span><br><span class="line"><span class="string">~~~ run ~~~</span></span><br><span class="line"><span class="string">test run</span></span><br><span class="line"><span class="string">1 *1 = 1</span></span><br><span class="line"><span class="string">while you typed 'test run'</span></span><br><span class="line"><span class="string">-------------------------------------</span></span><br><span class="line"><span class="string">以start运行</span></span><br><span class="line"><span class="string">Enter some text and press enter</span></span><br><span class="line"><span class="string">~~~ start ~~~</span></span><br><span class="line"><span class="string">~~~ run ~~~</span></span><br><span class="line"><span class="string">test start</span></span><br><span class="line"><span class="string">4674427 *4674427 = 21850258429476</span></span><br><span class="line"><span class="string">while you typed 'test start'</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+<p>解释：</p>
+<ul>
+<li><p>start(): 程序启动，运行到start时，调用start()方法启动了一个新的线程，而初始线程继续进行，判断线程存活执行了while操作，当用户键盘输入完成后，start开启的新线程结束，while亦结束。一旦退出，输出总结信息。</p>
+</li>
+<li><p>run(): 程序启动，运行到run时，调用InputReader类的run函数，不开启新的线程，当用户键盘输入完成后，run方法结束，所以再往下执行的时候，while不生效。</p>
+</li>
+<li><p>另一点，可以看出start()方法会先运行start()方法，再运行run()方法；而运行线程的run()方法只能调用到run()方法。</p>
+</li>
+<li><p>start() –&gt; run() –&gt; _target()</p>
+<p>run() –&gt; _target()</p>
+</li>
+</ul>
+<h4 id="多线程情况"><a href="#多线程情况" class="headerlink" title="多线程情况"></a>多线程情况</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">()</span>:</span></span><br><span class="line">    count = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> count &gt;<span class="number">3</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        print(<span class="string">"thread name = &#123;&#125;, thread id = &#123;&#125;, count = &#123;&#125; "</span>.format(threading.current_thread().name,</span><br><span class="line">                                                        threading.current_thread().ident,count))</span><br><span class="line"></span><br><span class="line">t1 = threading.Thread(target=worker, name=<span class="string">"t1"</span>)</span><br><span class="line">t2 = threading.Thread(target=worker, name=<span class="string">'t2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># t1.start()</span></span><br><span class="line"><span class="comment"># # t1.join()</span></span><br><span class="line"><span class="comment"># t2.start()</span></span><br><span class="line"></span><br><span class="line">t1.run()</span><br><span class="line">t2.run()</span><br><span class="line">print(<span class="string">"===end==="</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">run运行</span></span><br><span class="line"><span class="string">-----------------</span></span><br><span class="line"><span class="string">thread name = MainThread, thread id = 75620, count = 2</span></span><br><span class="line"><span class="string">thread name = MainThread, thread id = 75620, count = 3</span></span><br><span class="line"><span class="string">thread name = MainThread, thread id = 75620, count = 4</span></span><br><span class="line"><span class="string">thread name = MainThread, thread id = 75620, count = 2</span></span><br><span class="line"><span class="string">thread name = MainThread, thread id = 75620, count = 3</span></span><br><span class="line"><span class="string">thread name = MainThread, thread id = 75620, count = 4</span></span><br><span class="line"><span class="string">===end===</span></span><br><span class="line"><span class="string">-------------------</span></span><br><span class="line"><span class="string">stat运行</span></span><br><span class="line"><span class="string">-------------------</span></span><br><span class="line"><span class="string">===end===</span></span><br><span class="line"><span class="string">thread name = t2, thread id = 58296, count = 2 thread name = t1, thread id = 93012, count = 2 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">thread name = t2, thread id = 58296, count = 3 thread name = t1, thread id = 93012, count = 3 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">thread name = t1, thread id = 93012, count = 4 thread name = t2, thread id = 58296, count = 4 </span></span><br><span class="line"><span class="string">-------------------</span></span><br><span class="line"><span class="string">start+join</span></span><br><span class="line"><span class="string">-------------------</span></span><br><span class="line"><span class="string">thread name = t1, thread id = 86160, count = 2 </span></span><br><span class="line"><span class="string">thread name = t1, thread id = 86160, count = 3 </span></span><br><span class="line"><span class="string">thread name = t1, thread id = 86160, count = 4 </span></span><br><span class="line"><span class="string">===end===</span></span><br><span class="line"><span class="string">thread name = t2, thread id = 66352, count = 2 </span></span><br><span class="line"><span class="string">thread name = t2, thread id = 66352, count = 3 </span></span><br><span class="line"><span class="string">thread name = t2, thread id = 66352, count = 4 </span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+<p>多线程情况下</p>
+<ul>
+<li>当两个子线程都用run()方法启动时，会先运行t1.run()，运行完之后才按顺序运行t2.run()，两个线程都工作在主线程，没有启动新线程，因此，run()方法仅仅是普通函数调用。</li>
+<li>当两个子线程都用start()方法启动时，start()方法启动了两个新的子线程并交替运行，线程名是我们定义的name，每个子进程ID也不同。</li>
+<li>join()方法，正常场景，主线程在起了一个新的子线程后，主线程和子线程是并行的，互不干扰。但是，假如主线程调用了join方法，那它就得等待子线程完全执行完毕才能执行join()之后的语句，相当于又变成了单线程按顺序执行。</li>
+</ul>
+<h2 id="全局解释器锁GIL-Global-Interpreter-Lock"><a href="#全局解释器锁GIL-Global-Interpreter-Lock" class="headerlink" title="全局解释器锁GIL(Global Interpreter Lock)"></a>全局解释器锁GIL(Global Interpreter Lock)</h2><p>可能究其根本很复杂，但简单理解来说</p>
+<ul>
+<li>GIL 是CPython引入的概念，是设计之初为解决多线程之间数据完整性和状态同步，用了最简单自然的方法-加锁。后来由于代码开发者接受了这种设定，重度依赖这种特性而难以去除。</li>
+<li>CPython中<ul>
+<li>IO密集型，某个线程阻塞，就会调度其他就绪线程；</li>
+<li>CPU密集型，当前线程可能会连续的获得GIL，导致其它线程几乎无法使用CPU。</li>
+</ul>
+</li>
+<li>在CPython中由于有GIL存在<ul>
+<li>IO密集型，多线程</li>
+<li>CPU密集型，多进程</li>
+</ul>
+</li>
+<li>多线程编程，模型复杂，容易发生冲突，必须用锁加以隔离，同时，又要小心死锁的发生。</li>
+<li>Python解释器由于设计时有GIL全局锁，导致了多线程无法利用多核。多线程的并发在Python中就是一个美丽的梦。</li>
+<li>由于多线程共享内存，线程并发执行的顺序又是随机无法控制的，可能会造成多个线程同时改一个变量，把内容给改乱了。可通过<code>threading.Lock()</code>锁保证某段关键代码只能由一个线程从头到尾完整地执行，但可能会造成死锁，<a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017629247922688" target="_blank" rel="noopener">廖雪峰多线程</a>中有更详细的介绍。</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/i-honey/p/7823587.html" target="_blank" rel="noopener">Python 多线程 使用线程 (二)</a></p>
+<p><a href="https://www.cnblogs.com/i-honey/p/8043648.html" target="_blank" rel="noopener">Python 多线程 start()和run()方法的区别(三)</a></p>
+<p>（这一系列都蛮清晰的）</p>
+<p><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017629247922688" target="_blank" rel="noopener">廖雪峰多线程</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>wenwen</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        <a href="/tags/%E5%BC%80%E5%8F%91/"># 开发</a>
+                    
+                        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%A4%9A%E8%BF%9B%E7%A8%8B/"># 多线程与多进程</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/01/11/2019%E5%B9%B4%E6%80%BB%E7%BB%93/">2019年总结</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+
+	<style>
+	.copyright{line-height:24px}
+	</style>
+	
+    <div class="copyright">
+        <span>© wenwen | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+		<br>
+		<span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv"></span>  visits  |  </span>	
+		
+		<span id="busuanzi_container_site_uv"><span id="busuanzi_value_site_uv"></span>  visitors</span>
+		
+	</div>
+</footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+    </div>
+</body>
+</html>
